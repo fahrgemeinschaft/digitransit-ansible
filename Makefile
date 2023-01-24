@@ -3,7 +3,7 @@
 
 # ansible
 
-PLAYBOOK_CMD:=ANSIBLE_PIPELINING=true ansible-playbook --vault-password-file vault-password
+PLAYBOOK_CMD:=ANSIBLE_PIPELINING=true ansible-playbook --vault-password-file vault-password 
 
 galaxy-install:
 	ansible-galaxy collection install -r requirements.yml
@@ -91,3 +91,7 @@ photon-local:
 photon-remote:
 	. venv/bin/activate
 	ansible-playbook -i inventory-remote.yml photon-playbook.yml
+
+digitransit-local:
+	${PLAYBOOK_CMD} -i inventory-local.yml digitransit.yml 
+	

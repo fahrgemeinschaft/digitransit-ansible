@@ -1,0 +1,6 @@
+all:
+  hosts:
+    debian:
+      ansible_host: 192.168.122.138
+      ansible_user: user
+      ansible_ssh_private_key_file: ~/.ssh/id_rsa

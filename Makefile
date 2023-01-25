@@ -93,5 +93,5 @@ photon-remote:
 	ansible-playbook -i inventory-remote.yml photon-playbook.yml
 
 digitransit-local:
-	${PLAYBOOK_CMD} -i inventory-local.yml digitransit.yml 
+	${PLAYBOOK_CMD} -i ride2go-inventory.yml digitransit.yml 
 	

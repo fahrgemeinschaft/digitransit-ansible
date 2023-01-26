@@ -2,90 +2,20 @@ version: '3'
 
 services:
   opentripplanner:
-    image: {{ digitransit["images"]["otp"] }}
+    image: mfdz/opentripplanner:d38ffb9c2d7c52ff1f89423b077714e4a2c8d5de
     restart: on-failure:5
     container_name: opentripplanner
     logging:
       driver: journald
     ports:
-      - {{otp_port}}:8080
+      - 8080:8080
     command: --load --serve graph
     environment:
       - ROUTER_NAME=hb
-      - API_URL=https://{{ api_hostname }}/otp/
-      - ENCRYPTION_SECRET_KEY={{ encryption_secret_key }}
-      - JAVA_OPTS=-Xmx{{ otp_max_mem }} -XX:+FlightRecorder
+      - API_URL=https://api.stadtnavi.de/otp/
+      - JAVA_OPTS=-Xmx20G -XX:+FlightRecorder
     volumes:
       - /var/graph-build/latest/:/opt/opentripplanner/graph/
-
-  digitransit-ui:
-    image: {{ digitransit["images"]["ui"] }}
-    restart: on-failure
-    container_name: digitransit-ui
-    ports:
-      - {{ digitransit_ui_port }}:8080
-    networks:
-      - digitransit
-    logging:
-      driver: journald
-    environment:
-      - GEOCODING_BASE_URL={{ photon_url }}/pelias/v1
-      - API_URL=https://{{ api_hostname }}
-      - MAP_URL={{ map_url }}
-      - SEMI_TRANSPARENT_MAP_URL={{ semi_transparent_map_url }}
-      - BIKE_MAP_URL={{ bike_map_url }}
-      - NODE_ENV=production
-      - FAHRGEMEINSCHAFT_API_KEY={{ fahrgemeinschaft_api_key }}
-      - SHOW_TICKETS={{ enable_fares | to_json }}
-      - MATOMO_URL={{ matomo_url }}
-
-{% if digitransit["images"]["map_server"] is defined %}
-  hsl-map-server:
-    image: {{ digitransit["images"]["map_server"] }}
-    container_name: hsl-map-server
-    restart: on-failure:5
-    networks:
-      - digitransit
-    ports:
-      - {{ map_server_port }}:8080
-    environment:
-      - PARK_API_URL=https://{{ api_hostname }}/herrenberg/parking/parkapi.json
-      - GRAPHQL_URL=https://{{ api_hostname }}/routing/v1/router/index/graphql
-      - OTP_URL=https://{{ api_hostname }}/routing/v1/router/index/graphql
-      - CIFS_URL=https://data.mfdz.de/hbg/roadworks/cifs.json
-      - WEATHER_STATIONS_URL=https://{{ api_hostname }}/herrenberg/weather/weather.geojson
-      - CHARGING_STATIONS_URL=https://{{ api_hostname }}/herrenberg/charging-stations/charging-stations.geojson
-    logging:
-      driver: journald
-{% endif %}
-
-  graphiql:
-    image: corykitchens/graphiql:latest
-    container_name: graphiql
-    restart: on-failure:5
-    networks:
-      - digitransit
-    ports:
-      - {{ graphiql_port }}:4000
-    environment:
-      - API_URL=https://api.dev.stadtnavi.eu/routing/v1/router/index/graphql
-    logging:
-      driver: journald
-
-{% if digitransit["images"]["fares_service"] is defined %}
-  fares-service:
-    image: {{ digitransit["images"]["fares_service"] }}
-    container_name: fares-service
-    restart: on-failure:5
-    networks:
-      - digitransit
-    ports:
-      - {{ fares_service_port }}:3000
-    environment:
-      - TRIAS_REQUESTOR_REF={{ trias_api_key }}
-    logging:
-      driver: journald
-{% endif %}
 
 networks:
   digitransit:

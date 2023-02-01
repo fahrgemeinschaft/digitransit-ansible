@@ -32,13 +32,13 @@ ssh_allow_tcp_forwarding: 'yes'
 sftp_enabled: true
 sftp_chroot: true
 
-certbot_certs:
-  - domains:
-    - "{{ hostname }}"
-  - domains:
-    - "{{ api_hostname }}"
-  - domains:
-    - "{{ matomo_hostname }}"
+#certbot_certs:
+#  - domains:
+#    - "{{ hostname }}"
+#  - domains:
+#    - "{{ api_hostname }}"
+#  - domains:
+#    - "{{ matomo_hostname }}"
 
 certbot_auto_renew: true
 certbot_auto_renew_options: --pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"
@@ -197,7 +197,7 @@ nominatim_import_wikipedia: "true"
 #           6638303534383666330a313536326539343538316636373661623239376439646637643433393864
 #           38343439396564663765316638383538313230633734373235653237656333613663
 
-mfdz_gtfs_url: "gtfs.ride2go.com"
+#mfdz_gtfs_url: "gtfs.ride2go.com"
 # #mfdz_gtfs_url: !vault |
 # #          $ANSIBLE_VAULT;1.2;AES256;dev
 # #          35396335383261346431333061363235396261323139393030663134376361343330663032386564
@@ -298,9 +298,10 @@ enable_fake_bike_box: false
 #           61303638613437636466653038343766343834353766326162323538643764346164613833666637
 #           6665303730326137623134316530623131656330613862326665
 
-osm_url: https://gtfs.mfdz.de/bw-buffered.osm.pbf
+#osm_url: https://gtfs.mfdz.de/bw-buffered.osm.pbf
+osm_url: http://download.geofabrik.de/europe/germany/baden-wuerttemberg/stuttgart-regbez-latest.osm.pbf
 gtfs_urls:
   - https://gtfs.mfdz.de/hbg6.merged.with_flex.gtfs.zip
   - https://gtfs.mfdz.de/KVV.with_shapes.gtfs.zip
-  - "{{ mfdz_gtfs_url }}"
+  #- "{{ mfdz_gtfs_url }}"
 

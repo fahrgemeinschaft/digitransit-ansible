@@ -1,11 +1,11 @@
-hostname: "new.ride2go.info"
-api_hostname: "new.ride2go.info"
+hostname: "localhost"
+api_hostname: "localhost"
 #api_hostname: "api.stadtnavi.de"
-matomo_hostname: "new.ride2go.info"
+matomo_hostname: "localhost"
 encryption_secret_key: "123456"
 otp_max_mem: "20G"
-otp_docker_tag: d38ffb9c2d7c52ff1f89423b077714e4a2c8d5de
-#otp_docker_tag: latest
+#otp_docker_tag: d38ffb9c2d7c52ff1f89423b077714e4a2c8d5de
+otp_docker_tag: latest
 otp_router_config: hamburg/router-config.json
 
 digitransit:

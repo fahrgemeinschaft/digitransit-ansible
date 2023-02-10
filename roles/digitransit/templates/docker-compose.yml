@@ -2,7 +2,8 @@ version: '3'
 
 services:
   opentripplanner:
-    image: mfdz/opentripplanner:d38ffb9c2d7c52ff1f89423b077714e4a2c8d5de
+    #image: mfdz/opentripplanner:d38ffb9c2d7c52ff1f89423b077714e4a2c8d5de
+    image: mfdz/opentripplanner:latest
     restart: on-failure:5
     container_name: opentripplanner
     logging:

@@ -16,3 +16,12 @@
 - commented out parts relating to the ui
 ## docker-compose.yml
 - deleted encryption key and the UI part (everything between "services:" and "network:")
+## all.yml
+- commented out vaulted variables (they are unused variables, and causes encryption error)
+- disabled unused services (prediction, gtfs, etc..)
+## roles/base/main.yml
+- removed send to matrix script
+## docker-compose.yml
+- changed image to `mfdz/opentripplanner:latest` (from d38...)
+- changed otp_docker_tag to latest aswell.
+

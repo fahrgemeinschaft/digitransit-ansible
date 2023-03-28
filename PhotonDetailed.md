@@ -62,12 +62,37 @@
   - `su` # enter root password here
   - `/sbin/usermod -aG docker <username>`
 
+## If you want to use it on a local vm or direct IP connection:
 - **Change ip address and hostname on the certain files:**
   - `nano inventory-local.yml`
   - `nano ansible-playbook.yml` OR `nano photon-playbook.yml`
 
 - **Run the playbook:**
   - `make photon-local`
+## If you want to use it on a remote machine or with hostname:
+ - Add ssh configuration on your local machine, if it requires multiple ssh, use proxyjump too:
+    - `nano .ssh/config` on your local computer
+      ```bash 
+      Host services1
+          HostName 162.55.99.187
+          User ride2go
+          Port 38765
+          IdentityFile ~/.ssh/gi-student
+
+      Host photon-services1
+          ProxyJump services1
+          HostName 192.168.122.91
+          User ride2go
+          Port 22
+          IdentityFile ~/.ssh/gi-student
+      ``` 
+
+- **Change hostname on the certain files:**
+  - `nano inventory-remote.yml`
+  - `nano photon-playbook.yml`
+
+- **Run the playbook:**
+  - `make photon-remote`
 
 - **Add VM user to docker group after playbook successfully ran for the first time:**
   - `su` # enter root password here

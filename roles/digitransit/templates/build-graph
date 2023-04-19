@@ -18,7 +18,7 @@ docker stop $CONTAINER_NAME || true
 
 mkdir -p build
 cd build
-
+echo "TESTING NOW"
 # extract elevation zip files
 for i in "${ELEVATION_FILES[@]}"
 do
@@ -29,38 +29,39 @@ do
     echo "$zipfile exists."
   else
     echo "$tiffile does not exist. Downloading ..."
-    curl --fail --location -s "${ELEVATION_BASE_URL}{$zipfile}" -o ${zipfile}
+    #echo "curl --fail --location -s ${ELEVATION_BASE_URL}${zipfile} -o ${zipfile}"
+    df -h
+    # -k for allowing http connection, removed -s and fixed variable typos
+    # remove --fail to see errors on exit
+    curl -k --location "${ELEVATION_BASE_URL}${zipfile}" -o ${zipfile}
+    echo "Zip curl executed "
     unzip ${zipfile} ${tiffile}
+    echo "Zip unzipped  "
     rm ${zipfile}
+    echo "zip removed "
   fi
 done
 
-
-curl --location --fail -s "${PBF_DOWNLOAD_URL}" -o ${PBF_FILE}
-
+echo "debug PHASE 2 "
+curl -k --location "${PBF_DOWNLOAD_URL}" -o ${PBF_FILE}
+echo "debug PHASE 3 "
 rm -rf gtfs.zip
 rm -rf *.gtfs.zip
-
+echo "debug PHASE 4 "
 for i in "${GTFS_DOWNLOAD_URLS[@]}"
 do
   :
   hash=`cksum <<< "${i}"s | cut -f 1 -d ' '`
   filename=`basename ${i}`
   output="${filename}.${hash}.gtfs.zip"
-  curl -L --fail ${i} -o ${output}
+  curl -L ${i} -o ${output}
 done
-
+echo "debug PHASE 5 "
 docker pull ${IMAGE_NAME}
-docker run \
-  -v /var/graph-build/${BUILD_DIR}:/opt/opentripplanner/graph \
-  --name ${CONTAINER_NAME} \
-  --rm \
-  --cpu-shares 512 \
-  -e JAVA_OPTS="-Xmx24G" \
-  ${IMAGE_NAME} --build --save graph \
+docker run -v /var/graph-build/${BUILD_DIR}:/opt/opentripplanner/graph --name ${CONTAINER_NAME} --rm --cpu-shares 512 -e JAVA_OPTS="-Xmx24G" ${IMAGE_NAME} --build --save graph 
 
 echo "${IMAGE_NAME}" > otp-image-version
-
+echo "debug PHASE 6 "
 cd ..
 mkdir -p ${OUTPUT_DIR}
 cp ${BUILD_DIR}/graph.obj  ${OUTPUT_DIR}/
@@ -69,6 +70,6 @@ cp ${BUILD_DIR}/*.json ${OUTPUT_DIR}
 if [ -d "${BUILD_DIR}/report" ]; then
   cp -r "${BUILD_DIR}/report/" "${OUTPUT_DIR}"
 fi
+echo "debug PHASE 7 "
 
-
-send-to-matrix "📦️ OTP graph build complete on {{ inventory_hostname }}"
+#send-to-matrix "📦️ OTP graph build complete on {{ inventory_hostname }}"

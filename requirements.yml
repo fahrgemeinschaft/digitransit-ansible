@@ -7,8 +7,8 @@ collections:
 roles:
 - src: geerlingguy.docker
   version: 4.1.0
-- src: geerlingguy.certbot
-  version: 4.2.0
+#- src: geerlingguy.certbot
+#  version: 4.2.0
 - src: geerlingguy.swap
   version: 1.0.1
 - src: geerlingguy.firewall
